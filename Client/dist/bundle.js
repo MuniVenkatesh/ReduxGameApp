@@ -24040,13 +24040,24 @@ var List = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         "div",
-        null,
+        { className: "container" },
+        _react2.default.createElement("br", null),
+        _react2.default.createElement(
+          "div",
+          { className: "row" },
+          _react2.default.createElement("input", { type: "text", placeholder: "Search Game Here...", className: "form-control" })
+        ),
         this.props.data.map(function (game) {
           return _react2.default.createElement(
-            "li",
-            null,
-            game.title,
-            game.score
+            "div",
+            { className: "col-sm-4 " },
+            _react2.default.createElement("img", { className: "img-rounded", src: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSTPJDbZelqOYoDaoEXxthgU4TuNOlBfbKFIfrd78SPhDXqJvsu" }),
+            _react2.default.createElement("br", null),
+            _react2.default.createElement(
+              "h6",
+              null,
+              game.title
+            )
           );
         })
       );

@@ -9,8 +9,15 @@ class List extends React.Component{
   }
   render(){
     return(
-      <div>
-        {this.props.data.map((game)=>(<li>{game.title}{game.score}</li>))}
+      <div className="container">
+      <br/>
+      <div className="row">
+        <input type="text" placeholder="Search Game Here..." className="form-control" />
+      </div>
+        {this.props.data.map((game)=>(
+          <div className="col-sm-4 ">
+          <img className="img-rounded" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSTPJDbZelqOYoDaoEXxthgU4TuNOlBfbKFIfrd78SPhDXqJvsu"/>
+          <br/><h6>{game.title}</h6></div>))}
       </div>
     )
   }
