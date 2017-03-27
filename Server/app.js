@@ -17,18 +17,22 @@ db.once("open",()=>{
   console.log("Connected to Mongo");
 });
 
-if(gameSchema.count==0){
-  var csvReadStream=fs.createReadStream("gameData.csv");
+gameSchema.collection.stats((err,stats)=>{
 
-  csv()
-    .fromStream(csvReadStream)
-    .on("json",(jsonData)=>{
-      new gameSchema(jsonData).save();
-    })
-    .on("end",()=>{
-      console.log("csv data saved");
-    })
-}
+  if(stats.count==0){
+    var csvReadStream=fs.createReadStream("gamesc2b2088.csv");
+    csv()
+      .fromStream(csvReadStream)
+      .on("json",(jsonData)=>{
+        var data=new gameSchema(jsonData);
+        data.save();
+      })
+      .on("end",()=>{
+        console.log("csv data saved");
+      })
+  }
+})
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
