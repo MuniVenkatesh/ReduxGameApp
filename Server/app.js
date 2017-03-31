@@ -18,8 +18,7 @@ db.once("open",()=>{
 });
 
 gameSchema.collection.stats((err,stats)=>{
-
-  if(stats.count==0){
+ if(err||stats.count==0){
     var csvReadStream=fs.createReadStream("gamesc2b2088.csv");
     csv()
       .fromStream(csvReadStream)
