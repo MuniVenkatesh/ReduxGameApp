@@ -23974,6 +23974,20 @@ var add = exports.add = function add(data) {
   };
 };
 
+var titlefilter = exports.titlefilter = function titlefilter(filters) {
+  return {
+    type: "FILTER_TITLE",
+    payload: filters
+  };
+};
+
+var ecfilter = exports.ecfilter = function ecfilter(filters) {
+  return {
+    type: "FILTER_EC",
+    payload: filters
+  };
+};
+
 var fetchData = exports.fetchData = function fetchData() {
 
   return function (dispatch) {
@@ -23982,6 +23996,7 @@ var fetchData = exports.fetchData = function fetchData() {
       url: "/fetch",
       success: function success(gamedata) {
         gamedata.map(function (data) {
+          data.visibility = true;
           dispatch(add(data));
           return;
         });
@@ -24013,6 +24028,10 @@ var _index = __webpack_require__(219);
 
 var _redux = __webpack_require__(26);
 
+var _filters = __webpack_require__(223);
+
+var _filters2 = _interopRequireDefault(_filters);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24038,6 +24057,8 @@ var List = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         "div",
         { className: "container" },
@@ -24045,12 +24066,15 @@ var List = function (_React$Component) {
         _react2.default.createElement(
           "div",
           { className: "row" },
-          _react2.default.createElement("input", { type: "text", placeholder: "Search Game Here...", className: "form-control" })
+          _react2.default.createElement("input", { type: "text", placeholder: "Search Game Here...", className: "form-control", onChange: function onChange(e) {
+              _this2.props.filters({ title: e.target.value });
+            } }),
+          _react2.default.createElement(_filters2.default, null)
         ),
         this.props.data.map(function (game) {
           return _react2.default.createElement(
             "div",
-            { className: "col-sm-4 " },
+            { className: "col-sm-4", style: game.visibility == true ? { display: "block" } : { display: "none" } },
             _react2.default.createElement("img", { className: "img-rounded", src: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSTPJDbZelqOYoDaoEXxthgU4TuNOlBfbKFIfrd78SPhDXqJvsu" }),
             _react2.default.createElement("br", null),
             _react2.default.createElement(
@@ -24074,7 +24098,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return (0, _redux.bindActionCreators)({ fetch: _index.fetchData }, dispatch);
+  return (0, _redux.bindActionCreators)({ fetch: _index.fetchData, filters: _index.titlefilter }, dispatch);
 }
 exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(List);
 
@@ -24100,6 +24124,27 @@ var gameData = exports.gameData = function gameData() {
       return [].concat(_toConsumableArray(state), [action.payload]);
       break;
 
+    case "FILTER_TITLE":
+      var list = state.map(function (data) {
+        if (data.title.toUpperCase().indexOf(action.payload.title.toUpperCase()) == -1) {
+          data.visibility = false;
+        } else {
+          data.visibility = true;
+        }
+        return data;
+      });
+      return list;
+      break;
+
+    case "FILTER_EC":
+      return state.map(function (data) {
+        if (data.editors_choice != "Y") {
+          data.visibility = false;
+        }
+        return data;
+      });
+
+      break;
   }
   return state;
 };
@@ -24142,6 +24187,115 @@ var store = (0, _redux.createStore)(_combineReducer2.default, (0, _redux.applyMi
   { store: store },
   _react2.default.createElement(_app2.default, null)
 ), document.getElementById('root'));
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _reactRedux = __webpack_require__(57);
+
+var _react = __webpack_require__(17);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _redux = __webpack_require__(26);
+
+var _index = __webpack_require__(219);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Filters = function (_React$Component) {
+  _inherits(Filters, _React$Component);
+
+  function Filters() {
+    _classCallCheck(this, Filters);
+
+    return _possibleConstructorReturn(this, (Filters.__proto__ || Object.getPrototypeOf(Filters)).apply(this, arguments));
+  }
+
+  _createClass(Filters, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var platform = [],
+          genre = [];
+      this.props.data.map(function (game) {
+        if (platform.indexOf(game.platform) == -1) {
+          platform.push(game.platform);
+        }
+        if (genre.indexOf(game.genre) == -1) {
+          genre.push(game.genre);
+        }
+      });
+      return _react2.default.createElement(
+        "div",
+        { className: "row" },
+        _react2.default.createElement(
+          "div",
+          { className: "col-lg-4" },
+          platform.map(function (filter) {
+            return _react2.default.createElement(
+              "button",
+              { className: "btn btn-primary" },
+              filter
+            );
+          })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-lg-4" },
+          genre.map(function (filter) {
+            return _react2.default.createElement(
+              "button",
+              { className: "btn btn-primary" },
+              filter
+            );
+          })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "col-lg-4" },
+          _react2.default.createElement(
+            "button",
+            { className: "btn btn-primary", onClick: function onClick() {
+                _this2.props.filters({ ec: "Y" });
+              } },
+            "Editors_choice"
+          )
+        )
+      );
+    }
+  }]);
+
+  return Filters;
+}(_react2.default.Component);
+
+function mapStateToProps(state) {
+  return {
+    data: state.data
+  };
+}
+
+function matchDispatchToProps(dispatch) {
+  return (0, _redux.bindActionCreators)({ filters: _index.ecfilter }, dispatch);
+}
+exports.default = (0, _reactRedux.connect)(mapStateToProps, matchDispatchToProps)(Filters);
 
 /***/ })
 /******/ ]);
