@@ -5,16 +5,9 @@ export const add=(data)=>{
   }
 }
 
-export const titlefilter=(filters)=>{
+export const filterData=(filters)=>{
   return{
-    type:"FILTER_TITLE",
-    payload:filters
-  }
-}
-
-export const ecfilter=(filters)=>{
-  return{
-    type:"FILTER_EC",
+    type:"FILTER",
     payload:filters
   }
 }

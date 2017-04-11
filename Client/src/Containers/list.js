@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import React from "react";
 import {fetchData} from "../Actions/index.js";
-import {titlefilter} from "../Actions/index.js";
+import {filterData} from "../Actions/index.js";
 import {bindActionCreators} from "redux";
 import Filters from "./filters.js";
 
@@ -14,7 +14,7 @@ class List extends React.Component{
       <div className="container">
       <br/>
       <div className="row">
-        <input type="text" placeholder="Search Game Here..." className="form-control" onChange={(e)=>{this.props.filters({title:e.target.value})}}/>
+        <input type="text" placeholder="Search Game Here..." className="form-control" onChange={(e)=>{this.props.filter.title=e.target.value;this.props.filters(this.props.filter)}}/>
         <Filters />
       </div>
         {this.props.data.map((game)=>(
@@ -28,11 +28,12 @@ class List extends React.Component{
 
 function mapStateToProps(state){
   return{
-    data:state.data
+    data:state.data,
+    filter:state.filters
   }
 }
 
 function matchDispatchToProps(dispatch){
-  return bindActionCreators({fetch:fetchData,filters:titlefilter},dispatch);
+  return bindActionCreators({fetch:fetchData,filters:filterData},dispatch);
 }
 export default connect(mapStateToProps,matchDispatchToProps)(List);

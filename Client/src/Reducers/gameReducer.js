@@ -6,9 +6,12 @@ export const gameData=(state=[],action)=>{
     ]
       break;
 
-    case "FILTER_TITLE":
+    case "FILTER":
         let list=state.map(data=>{
           if(data.title.toUpperCase().indexOf(action.payload.title.toUpperCase())==-1){
+            data.visibility=false;
+          }
+          else if(action.payload.editors_choice==true&&data.editors_choice!="Y"){
             data.visibility=false;
           }
           else {
@@ -18,16 +21,14 @@ export const gameData=(state=[],action)=>{
         });
         return list;
         break;
-
-    case "FILTER_EC":
-          return state.map(data=>{
-              if(data.editors_choice!="Y"){
-                data.visibility=false;
-              }
-              return data;
-            });
-
-            break;
   }
   return state;
+}
+
+
+export const filter=(state={title:"",platform:[],genre:[],editors_choice:false,score:0},action)=>{
+if(action.type=="FILTER"){
+  return action.payload;
+}
+return state;
 }
