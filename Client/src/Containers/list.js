@@ -20,7 +20,7 @@ class List extends React.Component{
         {this.props.data.map((game)=>(
           <div className="col-sm-4" style={(game.visibility==true)?{display:"block"}:{display:"none"}}>
           <img className="img-rounded" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSTPJDbZelqOYoDaoEXxthgU4TuNOlBfbKFIfrd78SPhDXqJvsu"/>
-          <br/><h6>{game.title}</h6></div>))}
+          <br/><h6>{game.title}</h6>{game.platform}<br/>{game.genre}<br/>{game.editors_choice}</div>))}
       </div>
     )
   }

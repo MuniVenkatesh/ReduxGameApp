@@ -14,9 +14,30 @@ export const gameData=(state=[],action)=>{
           else if(action.payload.editors_choice==true&&data.editors_choice!="Y"){
             data.visibility=false;
           }
+          else if(action.payload.platform.length!=0&&action.payload.platform.indexOf(data.platform)==-1){
+              data.visibility=false;
+          }
+          else if(action.payload.genre.length!=0){
+              let type=data.genre.split(",");
+              let check=false;
+              type.map(p=>{
+
+                if(action.payload.genre.indexOf(p.trim())!=-1){
+                  
+                    check=true;
+                }
+              })
+              if(check==false){
+                data.visibility=false;
+              }
+              else {
+                data.visibility=true;
+              }
+          }
           else {
             data.visibility=true;
           }
+
           return data;
         });
         return list;

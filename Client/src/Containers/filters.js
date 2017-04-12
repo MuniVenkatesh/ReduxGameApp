@@ -28,14 +28,15 @@ class Filters extends React.Component{
     return(
       <div className="row">
         <div className="col-lg-4">
-          {platform.map(filter=>(<button className="btn btn-primary">{filter}</button>))}
+          {platform.map(filter=>(<button value={filter} className="btn" onClick={(e)=>{var index=this.props.filter.platform.indexOf(e.target.value); if(index!=-1){this.props.filter.platform.splice(index,1);e.target.style.backgroundColor="grey"} else{this.props.filter.platform.push(filter);e.target.style.backgroundColor="blue"}}}>{filter}</button>))}
         </div>
         <div className="col-lg-4">
-          {genre.map(filter=>(<button className="btn btn-primary">{filter}</button>))}
+          {genre.map(filter=>(<button value={filter} className="btn" onClick={(e)=>{var index=this.props.filter.genre.indexOf(e.target.value); if(index!=-1){this.props.filter.genre.splice(index,1);e.target.style.backgroundColor="grey"} else{this.props.filter.genre.push(filter);e.target.style.backgroundColor="blue"}}}>{filter}</button>))}
         </div>
         <div className="col-lg-4">
-          <button className="btn" style={(this.props.filter.editors_choice)?{backgroundColor:"blue"}:{backgroundColor:"grey"}} onClick={()=>{this.props.filter.editors_choice=!this.props.filter.editors_choice;this.props.filters(this.props.filter)}}>Editors_choice</button>
+          <button className="btn" onClick={(e)=>{this.props.filter.editors_choice=!this.props.filter.editors_choice; var setColor=()=>((this.props.filter.editors_choice)?"blue":"grey"); e.target.style.backgroundColor=setColor();}}>Editors_choice</button>
         </div>
+        <button className="btn btn-info" onClick={()=>{this.props.filters(this.props.filter)}}>Apply</button>
       </div>);
   }
 }
